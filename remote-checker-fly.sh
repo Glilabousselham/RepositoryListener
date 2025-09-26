@@ -1,13 +1,13 @@
 #!/bin/bash
 
 
-echo $@;
-
 # Default values (empty, required)
 REPO_DIR=""
 DEPLOY_SCRIPT=""
-REMOTE_BRANCH=""
-SLEEP_INTERVAL=5  # seconds
+REMOTE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+SLEEP_INTERVAL=120  # seconds
+
+echo "Current branch: $CURRENT_BRANCH"
 
 # Parse arguments
 for arg in "$@"; do
@@ -18,10 +18,6 @@ for arg in "$@"; do
             ;;
         --deploy-script=*)
             DEPLOY_SCRIPT="${arg#*=}"
-            shift
-            ;;
-        --branch=*)
-            REMOTE_BRANCH="${arg#*=}"
             shift
             ;;
         *)
@@ -41,7 +37,6 @@ fi
 
 
 # run the check script
-
 
 # Go to repo
 cd "$REPO_DIR" || { echo "Error: Cannot cd to $REPO_DIR"; exit 1; }
