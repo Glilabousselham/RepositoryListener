@@ -1,0 +1,27 @@
+
+[Unit]
+Description=Custom Service - Auto Deploy
+After=network.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+
+User=username
+
+ExecStart=/bin/bash /opt/scripts/git-repo-check.sh  \
+    --local-repo=/home/username/public_html \
+    --deploy-script=/home/username/autodeploy/deploy.sh
+
+Restart=always
+
+RestartSec=60
+
+StandardOutput=append:/var/log/cs-autodeploy-username.log
+
+StandardError=append:/var/log/cs-autodeploy-username.log
+
+
+
+[Install]
+WantedBy=multi-user.target

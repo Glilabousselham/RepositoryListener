@@ -4,7 +4,6 @@
 # Default values (empty, required)
 REPO_DIR=""
 DEPLOY_SCRIPT=""
-REMOTE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 SLEEP_INTERVAL=120  # seconds
 
 echo "Current branch: $CURRENT_BRANCH"
@@ -27,7 +26,7 @@ for arg in "$@"; do
 done
 
 # Validate required arguments
-if [ -z "$REPO_DIR" ] || [ -z "$DEPLOY_SCRIPT" ] || [ -z "$REMOTE_BRANCH" ]; then
+if [ -z "$REPO_DIR" ] || [ -z "$DEPLOY_SCRIPT" ]; then
     echo "Error: Missing required arguments."
     echo "Usage: $0 --local-repo=/path/to/repo --deploy-script=/path/to/deploy/script --branch=branch-name-to-check"
     exit 1
@@ -40,6 +39,9 @@ fi
 
 # Go to repo
 cd "$REPO_DIR" || { echo "Error: Cannot cd to $REPO_DIR"; exit 1; }
+
+# get active branch
+REMOTE_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 # Infinite loop
 while true; do
